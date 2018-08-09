@@ -1,0 +1,2 @@
+Overlay colour 818181
+Border inside 2 px

@@ -1,0 +1,20 @@
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\ThemeScriptMM.cs">
+    <Files>
+      <File FileName="Assets\Scripts\ThemeScriptMM.cs" Line="192" Column="5" />
+      <File FileName="Assets\Scripts\GameManager.cs" Line="614" Column="57" />
+      <File FileName="Assets\Scripts\UniversalScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\BackGScr1.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\ThemeTriger.cs" Line="244" Column="27" />
+      <File FileName="Assets\Player\PM2.cs" Line="1" Column="1" />
+      <File FileName="Assets\Player\PlayerBackGround1.cs" Line="1" Column="1" />
+      <File FileName="Assets\Player\playerManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\Pause\PauseScr.cs" Line="509" Column="16" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
