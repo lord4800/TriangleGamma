@@ -52,7 +52,7 @@ public class Bonus : MonoBehaviour {
         }
     }
 
-    void Contact()
+    public void Contact()
     {
         if (_generator != null)
             _generator.Generate();

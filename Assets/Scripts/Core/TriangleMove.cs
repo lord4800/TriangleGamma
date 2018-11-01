@@ -13,13 +13,4 @@ public class TriangleMove : MonoBehaviour {
 	void Update () {
 		
 	}
-    void OnCollisionEnter2D(Collision2D other)
-    {
-
-        //if (other.collider != null)
-        {
-            Debug.Log("Contact Triangle");
-            
-        }
-    }
 }
