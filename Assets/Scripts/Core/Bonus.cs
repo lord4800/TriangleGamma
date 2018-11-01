@@ -11,7 +11,6 @@ public class Bonus : MonoBehaviour {
     BounsGenerator _generator;
     public BounsGenerator generator { set { _generator = value; } }
 
-    // Use this for initialization
     void Start () {
         initPos();
 	}
@@ -22,32 +21,27 @@ public class Bonus : MonoBehaviour {
         transform.position = GetRestartPos(angle);
         gameObject.SetActive(true);
     }
+
     Vector3 GetRestartPos(float angle)
     {
         float x = range * Mathf.Cos(Mathf.Deg2Rad * angle);
         float y = range * Mathf.Sin(Mathf.Deg2Rad * angle);
         return new Vector3(x,y,0);
     }
-	// Update is called once per frame
-	void Update () {
-        transform.position += GetVectorTotriangle() * speed * Time.smoothDeltaTime;
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            initPos();
-        }
-        if (Vector3.Distance(transform.position, Vector3.zero) < 0.5f)
-        {
-            Contact();
-        }
 
+    void Update () {
+        MoveInc();
 	}
+
+    void MoveInc()
+    {
+        transform.position += GetVectorTotriangle() * speed * Time.smoothDeltaTime;
+    } 
 
     void OnCollisionEnter2D (Collision2D other)
     {
-       
-        //if (other.collider != null)
+        if (other.collider != null)
         {
-            Debug.Log("Contact");
             Contact();
         }
     }
@@ -58,7 +52,6 @@ public class Bonus : MonoBehaviour {
             _generator.Generate();
         gameObject.SetActive(false);
     }
-
 
     Vector3 GetVectorTotriangle()
     {

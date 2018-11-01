@@ -21,7 +21,6 @@ public class BounsGenerator : MonoBehaviour {
 
     int currentIndex = 0;
 
-	// Use this for initialization
 	void Start () {
         GeneratePool();	
 	}
@@ -58,12 +57,12 @@ public class BounsGenerator : MonoBehaviour {
         bonusPool[currentIndex].initPos();
     }
 
-	// Update is called once per frame
+    /*
 	void Update () {
         if (Input.GetKeyDown(KeyCode.B))
         {
             Generate();
             //StartCoroutine(Generator());
         }
-	}
+	}*/
 }
