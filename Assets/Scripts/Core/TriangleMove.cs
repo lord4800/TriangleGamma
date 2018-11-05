@@ -32,48 +32,58 @@ public class TriangleMove : MonoBehaviour {
         {
             angle -= rotateSpeed * Time.smoothDeltaTime;
         }
+        lookRot = Quaternion.LookRotation(transform.forward, GetLookAtVec());
+    }
+
+    Vector3 GetLookAtVec()
+    {
         float r = 1;
         float x = r * Mathf.Cos(Mathf.Deg2Rad * angle);
         float y = r * Mathf.Sin(Mathf.Deg2Rad * angle);
-        Vector3 lookAt = new Vector3(x, y, 0);
-        lookRot = Quaternion.LookRotation(transform.forward, lookAt);
+        return new Vector3(x, y, 0);
+    }
+
+    float GetCosA()
+    {
+        float y = Input.mousePosition.y - Screen.height / 2;
+        float x = Input.mousePosition.x - Screen.width / 2;
+        return x / Mathf.Sqrt(x * x + y * y);
+    }
+
+    void StartDrag()
+    {
+        float cosA = GetCosA();
+        float y = Input.mousePosition.y - Screen.height / 2;
+        if (y > 0)
+            dragAngle = Mathf.Acos(cosA);
+        else
+            dragAngle = - Mathf.Acos(cosA);
+    }
+    void OnDrag()
+    {
+        //set angle change;
+        float newAngle;
+        float cosA = GetCosA();
+        float y = Input.mousePosition.y - Screen.height / 2;
+        if (y > 0)
+            newAngle = Mathf.Acos(cosA);
+        else
+            newAngle = - Mathf.Acos(cosA);
+        float deltaAngle = newAngle - dragAngle;
+        dragAngle = newAngle;
+        Debug.Log(Mathf.Rad2Deg * dragAngle);
+        float angleWithDelta = Mathf.Deg2Rad * angle + deltaAngle;
+        angle = Mathf.Rad2Deg * angleWithDelta;
+        // create vector in eulerXY
+        lookRot = Quaternion.LookRotation(transform.forward, GetLookAtVec());
     }
 
     void DragInput()
     {
-        
         if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            float y = Input.mousePosition.y - Screen.height / 2;
-            float x = Input.mousePosition.x - Screen.width / 2;
-            float cosA = x / Mathf.Sqrt(x * x + y * y);
-            dragAngle = Mathf.Acos(cosA);
-        }
-
+            StartDrag();
         if (Input.GetKey(KeyCode.Mouse0))
-        {
-            //set angle change;
-            float y = Input.mousePosition.y - Screen.height / 2;
-            float x = Input.mousePosition.x - Screen.width / 2;
-            float cosA = x / Mathf.Sqrt(x * x + y * y);
-            float newAngle;
-            if (y > 0)
-
-                newAngle = Mathf.Acos(cosA);
-            else
-                newAngle = - Mathf.Acos(cosA);
-            float deltaAngle = newAngle  - dragAngle;
-            dragAngle = newAngle;
-            Debug.Log(Mathf.Rad2Deg * dragAngle);
-            float angleWithDelta = Mathf.Deg2Rad * angle + deltaAngle;
-            angle = Mathf.Rad2Deg * angleWithDelta;
-            // create vector in eulerXY
-            float r = 1;
-            x = r * Mathf.Cos(angleWithDelta);
-            y = r * Mathf.Sin(angleWithDelta);
-            Vector3 lookAt = new Vector3(x, y, 0);
-            lookRot = Quaternion.LookRotation(transform.forward, lookAt);
-        }
+            OnDrag();
         /* ForTouch
          * DONT DELETE
         if (Input.touchCount > 0)
@@ -118,12 +128,7 @@ public class TriangleMove : MonoBehaviour {
                 angle += rotateSpeed * Time.smoothDeltaTime;
             }
             // create vector in eulerXY
-            float r = 1;
-            float x = r * Mathf.Cos(Mathf.Deg2Rad * angle);
-            float y = r * Mathf.Sin(Mathf.Deg2Rad * angle);
-            Vector3 lookAt = new Vector3(x,y,0);
-            lookRot = Quaternion.LookRotation(transform.forward, lookAt);
-
+            lookRot = Quaternion.LookRotation(transform.forward, GetLookAtVec());
         }
     }
 }
