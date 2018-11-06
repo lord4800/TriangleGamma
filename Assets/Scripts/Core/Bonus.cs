@@ -42,14 +42,46 @@ public class Bonus : MonoBehaviour {
     {
         if (other.collider != null)
         {
-            Contact();
+            Contact(other.collider);
         }
     }
 
-    public void Contact()
+    public void Contact(Collider2D contact)
     {
-        if (_generator != null)
-            _generator.Generate();
+        ContactReaction(getSideType(contact));
+        
+    }
+
+    SideType getSideType(Collider2D contact)
+    {
+        if (contact == _generator.greenSideCollider)
+            return SideType.green;
+        else if (contact == _generator.yellowSideCollider)
+            return SideType.yellow;
+        else 
+            return SideType.red;
+    }
+
+    public void ContactReaction(SideType side)
+    {
+        switch (side)
+        {
+            case SideType.red:
+                {
+                    Debug.Log("Red");
+                    break;
+                }
+            case SideType.green:
+                {
+                    Debug.Log("Green");
+                    break;
+                }
+            case SideType.yellow:
+                {
+                    Debug.Log("Yellow");
+                    break;
+                }
+        }
         gameObject.SetActive(false);
     }
 

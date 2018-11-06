@@ -4,3 +4,10 @@ public enum BonusType {
     negative,
     money
 }
+
+public enum SideType
+{
+    green,
+    red,
+    yellow
+}

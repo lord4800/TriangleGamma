@@ -17,12 +17,17 @@ public class BounsGenerator : MonoBehaviour {
     int poolLength;
     List<PosBonus> bonusPool;
 
+    public Collider2D greenSideCollider;
+    public Collider2D redSideCollider;
+    public Collider2D yellowSideCollider;
+
     Coroutine GenerateCorot;
 
     int currentIndex = 0;
 
 	void Start () {
-        GeneratePool();	
+        GeneratePool();
+        StartCoroutine(Generator());
 	}
 
     void GeneratePool()

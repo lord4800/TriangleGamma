@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TriangleMove : MonoBehaviour {
     public float rotateSpeed;
-	
+    public float lerpIndex;
     public enum RotateType { arrow, drag, buttons }
     public RotateType rotateType = RotateType.arrow;
 
@@ -19,7 +19,7 @@ public class TriangleMove : MonoBehaviour {
             case RotateType.drag: { DragInput(); break; }
             case RotateType.buttons: { ButtonsInput(); break; }
         }
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, 0.4f) ;
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, lerpIndex) ;
     }
 
     void ArrowInput()
@@ -71,7 +71,6 @@ public class TriangleMove : MonoBehaviour {
             newAngle = - Mathf.Acos(cosA);
         float deltaAngle = newAngle - dragAngle;
         dragAngle = newAngle;
-        Debug.Log(Mathf.Rad2Deg * dragAngle);
         float angleWithDelta = Mathf.Deg2Rad * angle + deltaAngle;
         angle = Mathf.Rad2Deg * angleWithDelta;
         // create vector in eulerXY
