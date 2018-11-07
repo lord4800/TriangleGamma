@@ -8,7 +8,7 @@ public class Bonus : MonoBehaviour {
     public float speed = 1f;
     [SerializeField]
     float range = 10f;
-    BounsGenerator _generator;
+    protected BounsGenerator _generator;
     public BounsGenerator generator { set { _generator = value; } }
 
     void Start () {
@@ -68,17 +68,22 @@ public class Bonus : MonoBehaviour {
         {
             case SideType.red:
                 {
-                    Debug.Log("Red");
                     break;
                 }
             case SideType.green:
                 {
-                    Debug.Log("Green");
+                    if (type == BonusType.negative)
+                        ScoreCounter.instance.NegCounter();
+                    else if (type == BonusType.positive)
+                        ScoreCounter.instance.AddCounter();
                     break;
                 }
             case SideType.yellow:
                 {
-                    Debug.Log("Yellow");
+                    if (type == BonusType.money)
+                        ScoreCounter.instance.AddCounter();
+                    else if (type == BonusType.negative)
+                        ScoreCounter.instance.NegCounter();
                     break;
                 }
         }

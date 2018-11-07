@@ -21,6 +21,11 @@ public class BounsGenerator : MonoBehaviour {
     public Collider2D redSideCollider;
     public Collider2D yellowSideCollider;
 
+    [Header("Sum of chance should be 1")]
+    public float generateGreenChance;
+    public float generateRedChance;
+    public float generateYellowChance;
+
     Coroutine GenerateCorot;
 
     int currentIndex = 0;

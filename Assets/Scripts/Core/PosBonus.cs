@@ -15,7 +15,7 @@ public class PosBonus : Bonus {
     public override void initPos()
     {
         base.initPos();
-        
+        GenerateType(); 
         switch (type)
         {
             case BonusType.positive: { _sprite.sprite = green; break; }
@@ -24,4 +24,21 @@ public class PosBonus : Bonus {
         }
 
     }
+
+    void GenerateType()
+    {
+        float chance = Random.Range(0f,1f);
+        if (chance < _generator.generateGreenChance)
+        {
+            type = BonusType.positive;
+        }
+        else if (chance < _generator.generateGreenChance + _generator.generateYellowChance)
+        {
+            type = BonusType.money;
+        } else
+        {
+            type = BonusType.negative;
+        }
+    }
+
 }
