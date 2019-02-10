@@ -11,6 +11,9 @@ public class PosBonus : Bonus {
     Sprite gold;
     [SerializeField]
     Sprite red;
+    public GameObject particleReactionGreen;
+    public GameObject particleReactionYellow;
+    public GameObject particleReactionRed;
 
     public override void initPos()
     {
@@ -38,6 +41,47 @@ public class PosBonus : Bonus {
         } else
         {
             type = BonusType.negative;
+        }
+    }
+
+    public override void ReflectionReaction(Vector3 normal)
+    {
+        base.ReflectionReaction(normal);
+        SpawnParticle();
+        SpawnParticle();
+    }
+
+    public override void PositiveReaction()
+    {
+        //TODO: add absorbate animation;
+    }
+
+    public override void NegativeReaction()
+    {
+        SpawnParticle();
+
+        base.NegativeReaction();
+    }
+
+    void SpawnParticle()
+    {
+        switch (type)
+        {
+            case BonusType.negative:
+            {
+                Instantiate(particleReactionRed, transform.position, Quaternion.identity);
+                break;
+            }
+            case BonusType.positive:
+            {
+                Instantiate(particleReactionGreen, transform.position, Quaternion.identity);
+                break;
+            }
+            case BonusType.money:
+            {
+                Instantiate(particleReactionYellow, transform.position, Quaternion.identity);
+                break;
+            }
         }
     }
 
