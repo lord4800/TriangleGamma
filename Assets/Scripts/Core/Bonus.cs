@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bonus : MonoBehaviour {
-
+public class Bonus : MonoBehaviour
+{
+    private const float reflectionSpeedIncrease = 2.5f;
     public BonusType type;
     public float speed = 1f;
     [SerializeField]
     float range = 10f;
     protected BounsGenerator _generator;
     public BounsGenerator generator { set { _generator = value; } }
+    private Vector3 moveVector;
+    
 
     void Start () {
         initPos();
@@ -20,6 +23,7 @@ public class Bonus : MonoBehaviour {
         float angle = Random.Range(0, 360);
         transform.position = GetRestartPos(angle);
         gameObject.SetActive(true);
+        moveVector = SetCurrentVector();
     }
 
     Vector3 GetRestartPos(float angle)
@@ -35,20 +39,20 @@ public class Bonus : MonoBehaviour {
 
     void MoveInc()
     {
-        transform.position += GetVectorTotriangle() * speed * Time.smoothDeltaTime;
+        transform.position += moveVector * speed * Time.smoothDeltaTime;
     } 
 
     void OnCollisionEnter2D (Collision2D other)
     {
         if (other.collider != null)
         {
-            Contact(other.collider);
+            Contact(other);
         }
     }
 
-    public void Contact(Collider2D contact)
+    public void Contact(Collision2D collision)
     {
-        ContactReaction(getSideType(contact));
+        ContactReaction(collision);
         
     }
 
@@ -62,35 +66,54 @@ public class Bonus : MonoBehaviour {
             return SideType.red;
     }
 
-    public void ContactReaction(SideType side)
+    public virtual void ContactReaction(Collision2D collision)
     {
+        SideType side = getSideType(collision.collider);
         switch (side)
         {
             case SideType.red:
-                {
-                    break;
-                }
+            {
+                ReflectionReaction(collision.contacts[0].normal);
+                break;
+            }
             case SideType.green:
-                {
-                    if (type == BonusType.negative)
-                        ScoreCounter.instance.NegCounter();
-                    else if (type == BonusType.positive)
-                        ScoreCounter.instance.AddCounter();
-                    break;
-                }
+            {
+                if (type == BonusType.negative)
+                    NegativeReaction(); //ScoreCounter.instance.NegCounter();
+                else if (type == BonusType.positive)
+                    PositiveReaction(); //ScoreCounter.instance.AddCounter();
+                gameObject.SetActive(false);
+                break;
+            }
             case SideType.yellow:
-                {
-                    if (type == BonusType.money)
-                        ScoreCounter.instance.AddCounter();
-                    else if (type == BonusType.negative)
-                        ScoreCounter.instance.NegCounter();
-                    break;
-                }
+            {
+                if (type == BonusType.money)
+                    PositiveReaction(); //ScoreCounter.instance.AddCounter();
+                else if (type == BonusType.negative)
+                    NegativeReaction(); //ScoreCounter.instance.NegCounter();
+                gameObject.SetActive(false);
+                break;
+            }
         }
-        gameObject.SetActive(false);
+
     }
 
-    Vector3 GetVectorTotriangle()
+    public virtual void ReflectionReaction(Vector3 normal)
+    {
+        moveVector = Vector3.Reflect(moveVector*3, normal);
+    }
+
+    public virtual void PositiveReaction()
+    {
+        ScoreCounter.instance.AddCounter();
+    }
+
+    public virtual void NegativeReaction()
+    {
+        ScoreCounter.instance.NegCounter();
+    }
+
+    Vector3 SetCurrentVector()
     {
         return (Vector3.zero - transform.position).normalized;
     }
