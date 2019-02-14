@@ -11,9 +11,6 @@ public class PosBonus : Bonus {
     Sprite gold;
     [SerializeField]
     Sprite red;
-    public GameObject particleReactionGreen;
-    public GameObject particleReactionYellow;
-    public GameObject particleReactionRed;
 
     public override void initPos()
     {
@@ -54,6 +51,7 @@ public class PosBonus : Bonus {
     public override void PositiveReaction()
     {
         //TODO: add absorbate animation;
+        base.PositiveReaction();
     }
 
     public override void NegativeReaction()
@@ -65,24 +63,8 @@ public class PosBonus : Bonus {
 
     void SpawnParticle()
     {
-        switch (type)
-        {
-            case BonusType.negative:
-            {
-                Instantiate(particleReactionRed, transform.position, Quaternion.identity);
-                break;
-            }
-            case BonusType.positive:
-            {
-                Instantiate(particleReactionGreen, transform.position, Quaternion.identity);
-                break;
-            }
-            case BonusType.money:
-            {
-                Instantiate(particleReactionYellow, transform.position, Quaternion.identity);
-                break;
-            }
-        }
+        if (ParticleManagerScr.instance != null)
+            ParticleManagerScr.instance.SetParticle(transform.position, type);
     }
 
 }
