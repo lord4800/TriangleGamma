@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class BonusBase : MonoBehaviour
 {
-    private const float reflectionSpeedIncrease = 2.5f;
+    private const float REFLECTION_SPEED_INCREASE = 2.5f;
+
     public ColorType type;
     public float speed = 1f;
-    [SerializeField]
-    float range = 10f;
-    protected BounsGenerator _generator;
     public BounsGenerator generator { set { _generator = value; } }
+
+    [SerializeField] private float range = 10f;
     private Vector3 moveVector;
-    
+
+    protected BounsGenerator _generator;
 
     void Start () {
         initPos();

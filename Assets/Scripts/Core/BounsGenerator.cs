@@ -3,16 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BounsGenerator : MonoBehaviour {
-    [SerializeField]
-    float bonusTime;
-    [SerializeField]
-    List<GameObject> ItemPref = new List<GameObject>();
-    [SerializeField]
-    GameObject bonusPrefab;
-    [SerializeField]
-    int poolLength;
-    List<Bonus> bonusPool;
-
     public Collider2D greenSideCollider;
     public Collider2D redSideCollider;
     public Collider2D yellowSideCollider;
@@ -22,11 +12,23 @@ public class BounsGenerator : MonoBehaviour {
     public float generateRedChance;
     public float generateYellowChance;
 
-    Coroutine GenerateCorot;
+    [SerializeField] private float bonusTime;
+    [SerializeField] private GameObject bonusPrefab;
+    [SerializeField] private int poolLength;
 
-    int currentIndex = 0;
+    private List<Bonus> bonusPool;
 
-	void Start () {
+    private int currentIndex = 0;
+
+    public void Generate()
+    {
+        currentIndex++;
+        if (currentIndex >= poolLength)
+            currentIndex = 0;
+        bonusPool[currentIndex].initPos();
+    }
+
+    void Start () {
         GeneratePool();
         StartCoroutine(Generator());
 	}
@@ -53,13 +55,5 @@ public class BounsGenerator : MonoBehaviour {
             yield return new WaitForSeconds(bonusTime);
             Generate();
         }
-    }
-
-    public void Generate()
-    {
-        currentIndex++;
-        if (currentIndex >= poolLength)
-            currentIndex = 0;
-        bonusPool[currentIndex].initPos();
     }
 }

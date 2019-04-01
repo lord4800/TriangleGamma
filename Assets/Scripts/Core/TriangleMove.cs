@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TriangleMove : MonoBehaviour {
     public float rotateSpeed;
@@ -8,10 +6,10 @@ public class TriangleMove : MonoBehaviour {
     public enum RotateType { arrow, drag, buttons }
     public RotateType rotateType = RotateType.arrow;
 
-    Quaternion lookRot = Quaternion.identity;
-    float angle = 0;
-    float dragAngle = 0;
-    // Update is called once per frame
+    private Quaternion lookRot = Quaternion.identity;
+    private float angle = 0;
+    private float dragAngle = 0;
+
 	void Update () {
         switch (rotateType)
         {
@@ -69,8 +67,10 @@ public class TriangleMove : MonoBehaviour {
             newAngle = Mathf.Acos(cosA);
         else
             newAngle = - Mathf.Acos(cosA);
+
         float deltaAngle = newAngle - dragAngle;
         dragAngle = newAngle;
+
         float angleWithDelta = Mathf.Deg2Rad * angle + deltaAngle;
         angle = Mathf.Rad2Deg * angleWithDelta;
         // create vector in eulerXY

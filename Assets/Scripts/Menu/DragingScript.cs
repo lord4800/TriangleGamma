@@ -3,26 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DragingScript : MonoBehaviour {
-    public Transform recordButton;
-    public Transform exitButton;
-    public Transform settingsButton;
+    [SerializeField] private float maxDistance;
+    [SerializeField] private float speed;
+    [SerializeField] private List<Transform> buttonsTransforms = new List<Transform>();
 
-    public Transform themsButton;
-    public Transform tutorialButton;
-    public Transform informationButton;
-
-    [SerializeField]
-    float maxDistance;
-    [SerializeField]
-    float speed;
-
-    Vector3 startRecordPosition;
-    Vector3 startExitPosition;
-    Vector3 startSettingsPosition;
-
-    Vector3 startThemsPosition;
-    Vector3 startTutorialPosition;
-    Vector3 startInformationPosition;
+    private List<Vector3> startButtonsPositions;
 
     void Start () {
         SaveStartPos();
@@ -34,25 +19,21 @@ public class DragingScript : MonoBehaviour {
 
     void DragAllElements()
     {
-        DragElement(recordButton,startRecordPosition);
-        DragElement(exitButton, startExitPosition);
-        DragElement(settingsButton, startSettingsPosition);
-        DragElement(themsButton, startThemsPosition);
-        DragElement(tutorialButton, startTutorialPosition);
-        DragElement(informationButton, startInformationPosition);
-
+        for (int i = 0; i < buttonsTransforms.Count; i++)
+        {
+            Transform element = buttonsTransforms[i];
+            DragElement(element, startButtonsPositions[i]);
+        }
     }
 
     void DragElement(Transform element, Vector3 startPos)
     {
         if (Vector3.Distance(startPos, element.position) > maxDistance)
         {
-            //make move Inside
             MakeMoveInside(element, startPos);
         }
         else
         {
-            //make random move
             MakeRandomMove(element);
         }
     }
@@ -64,7 +45,7 @@ public class DragingScript : MonoBehaviour {
 
     void MakeRandomMove(Transform element)
     {
-        element.position = Vector3.Lerp(element.position,element.position + EpsilonVec().normalized,Time.smoothDeltaTime * speed);
+        element.position = Vector3.Lerp(element.position, element.position + EpsilonVec().normalized, Time.smoothDeltaTime * speed);
     }
 
     Vector3 EpsilonVec()
@@ -76,11 +57,7 @@ public class DragingScript : MonoBehaviour {
 
     void SaveStartPos()
     {
-        startRecordPosition = recordButton.position;
-        startExitPosition = exitButton.position;
-        startSettingsPosition = settingsButton.position;
-        startThemsPosition = themsButton.position;
-        startTutorialPosition = tutorialButton.position;
-        startInformationPosition = informationButton.position;
+        foreach (var element in buttonsTransforms)
+            startButtonsPositions.Add(element.position);
     }
 }

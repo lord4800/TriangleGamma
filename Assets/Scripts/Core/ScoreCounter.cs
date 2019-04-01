@@ -3,15 +3,17 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ScoreCounter : MonoBehaviour {
-    public static ScoreCounter instance { get { return _instance; } }
     static ScoreCounter _instance;
+
+    public static ScoreCounter instance { get { return _instance; } }
     public AnimationCurve changeScoreAnim;
-    [SerializeField]
-    float animTime;
-    Text counterText;
-    int count = 0;
-	// Use this for initialization
-	void Start () {
+
+    [SerializeField] private float animTime;
+
+    private Text counterText;
+    private int count = 0;
+
+    void Start () {
         _instance = this;
         counterText = GetComponent<Text>();
         count = 0;
@@ -46,5 +48,4 @@ public class ScoreCounter : MonoBehaviour {
         yield return null;
         transform.localScale = Vector3.one;
     }
-
 }

@@ -1,14 +1,10 @@
 ﻿using UnityEngine;
 
 public class Bonus : BonusBase {
-    [SerializeField]
-    SpriteRenderer _sprite;
-    [SerializeField]
-    Sprite green;
-    [SerializeField]
-    Sprite gold;
-    [SerializeField]
-    Sprite red;
+    [SerializeField] private SpriteRenderer bonusSprite;
+    [SerializeField] private Sprite green;
+    [SerializeField] private Sprite gold;
+    [SerializeField] private Sprite red;
 
     public override void initPos()
     {
@@ -16,33 +12,15 @@ public class Bonus : BonusBase {
         GenerateType(); 
         switch (type)
         {
-            case ColorType.green: { _sprite.sprite = green; break; }
-            case ColorType.yellow: { _sprite.sprite = gold; break; }
-            case ColorType.red: { _sprite.sprite = red; break; }
-        }
-
-    }
-
-    void GenerateType()
-    {
-        float chance = Random.Range(0f,1f);
-        if (chance < _generator.generateGreenChance)
-        {
-            type = ColorType.green;
-        }
-        else if (chance < _generator.generateGreenChance + _generator.generateYellowChance)
-        {
-            type = ColorType.yellow;
-        } else
-        {
-            type = ColorType.red;
+            case ColorType.green: { bonusSprite.sprite = green; break; }
+            case ColorType.yellow: { bonusSprite.sprite = gold; break; }
+            case ColorType.red: { bonusSprite.sprite = red; break; }
         }
     }
 
     public override void ReflectionReaction(Vector3 normal)
     {
         base.ReflectionReaction(normal);
-        SpawnParticle();
         SpawnParticle();
     }
 
@@ -55,14 +33,30 @@ public class Bonus : BonusBase {
     public override void NegativeReaction()
     {
         SpawnParticle();
-
         base.NegativeReaction();
+    }
+
+    void GenerateType()
+    {
+        float chance = Random.Range(0f, 1f);
+        if (chance < _generator.generateGreenChance)
+        {
+            type = ColorType.green;
+        }
+        else if (chance < _generator.generateGreenChance + _generator.generateYellowChance)
+        {
+            type = ColorType.yellow;
+        }
+        else
+        {
+            type = ColorType.red;
+        }
     }
 
     void SpawnParticle()
     {
-        if (ParticleManagerScr.instance != null)
-            ParticleManagerScr.instance.SetParticle(transform.position, type);
+        if (ParticleManager.instance != null)
+            ParticleManager.instance.SetParticle(transform.position, type);
     }
 
 }
