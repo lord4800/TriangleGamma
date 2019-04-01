@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 public class ParticleManagerScr : MonoBehaviour
 {
@@ -26,7 +25,7 @@ public class ParticleManagerScr : MonoBehaviour
         }
 	}
 
-    public void SetParticle(Vector3 pos, BonusType type)
+    public void SetParticle(Vector3 pos, ColorType type)
     {
         currentIndex--;
         if (currentIndex < 0)
@@ -37,13 +36,13 @@ public class ParticleManagerScr : MonoBehaviour
         ParticleSystem.MainModule ma = ps.main;
         switch (type)
         {
-            case BonusType.money:
+            case ColorType.yellow:
                 ma.startColor = yellow;
                 break;
-            case BonusType.negative:
+            case ColorType.red:
                 ma.startColor = red;
                 break;
-            case BonusType.positive:
+            case ColorType.green:
                 ma.startColor = green;
                 break;
         }

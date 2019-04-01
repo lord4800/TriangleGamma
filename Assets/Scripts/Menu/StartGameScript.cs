@@ -18,18 +18,12 @@ public class StartGameScript : MonoBehaviour
     [SerializeField]
     private Transform playButton;
     [SerializeField]
-    private CanvasGroup canvG;
+    private CanvasGroup canvasGroup;
 
     Coroutine popCorot = null;
-    // Use this for initialization
-    void Start()
-    {
-
-    }
 
     public void StartGame()
     {
-        Debug.Log("click");
         if (popCorot == null)
             popCorot = StartCoroutine(PopUpAnim());
     }
@@ -44,14 +38,14 @@ public class StartGameScript : MonoBehaviour
                 sendMes = true;
                 SwapEvent();
             }
-            canvG.alpha = 1 - f / animTime;
+            canvasGroup.alpha = 1 - f / animTime;
             yield return null;
         }
         playButton.gameObject.SetActive(false);
         playButton.localScale = Vector3.one;
-        canvG.alpha = 0;
+        canvasGroup.alpha = 0;
         popCorot = null;
-        canvG.gameObject.SetActive (false);
+        canvasGroup.gameObject.SetActive (false);
     }
     public void SwapEvent()
     {

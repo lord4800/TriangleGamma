@@ -1,120 +1,68 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Bonus : MonoBehaviour
-{
-    private const float reflectionSpeedIncrease = 2.5f;
-    public BonusType type;
-    public float speed = 1f;
+public class Bonus : BonusBase {
     [SerializeField]
-    float range = 10f;
-    protected BounsGenerator _generator;
-    public BounsGenerator generator { set { _generator = value; } }
-    private Vector3 moveVector;
-    
+    SpriteRenderer _sprite;
+    [SerializeField]
+    Sprite green;
+    [SerializeField]
+    Sprite gold;
+    [SerializeField]
+    Sprite red;
 
-    void Start () {
-        initPos();
-	}
-
-    public virtual void initPos()
+    public override void initPos()
     {
-        float angle = Random.Range(0, 360);
-        transform.position = GetRestartPos(angle);
-        gameObject.SetActive(true);
-        moveVector = SetCurrentVector();
-    }
-
-    Vector3 GetRestartPos(float angle)
-    {
-        float x = range * Mathf.Cos(Mathf.Deg2Rad * angle);
-        float y = range * Mathf.Sin(Mathf.Deg2Rad * angle);
-        return new Vector3(x,y,0);
-    }
-
-    void Update () {
-        MoveInc();
-	}
-
-    void MoveInc()
-    {
-        transform.position += moveVector * speed * Time.smoothDeltaTime;
-    } 
-
-    void OnCollisionEnter2D (Collision2D other)
-    {
-        if (other.collider != null)
+        base.initPos();
+        GenerateType(); 
+        switch (type)
         {
-            Contact(other);
-        }
-    }
-
-    public void Contact(Collision2D collision)
-    {
-        ContactReaction(collision);
-        
-    }
-
-    SideType getSideType(Collider2D contact)
-    {
-        if (contact == _generator.greenSideCollider)
-            return SideType.green;
-        else if (contact == _generator.yellowSideCollider)
-            return SideType.yellow;
-        else 
-            return SideType.red;
-    }
-
-    public virtual void ContactReaction(Collision2D collision)
-    {
-        SideType side = getSideType(collision.collider);
-        switch (side)
-        {
-            case SideType.red:
-            {
-                ReflectionReaction(collision.contacts[0].normal);
-                break;
-            }
-            case SideType.green:
-            {
-                if (type == BonusType.negative)
-                    NegativeReaction(); //ScoreCounter.instance.NegCounter();
-                else if (type == BonusType.positive)
-                    PositiveReaction(); //ScoreCounter.instance.AddCounter();
-                gameObject.SetActive(false);
-                break;
-            }
-            case SideType.yellow:
-            {
-                if (type == BonusType.money)
-                    PositiveReaction(); //ScoreCounter.instance.AddCounter();
-                else if (type == BonusType.negative)
-                    NegativeReaction(); //ScoreCounter.instance.NegCounter();
-                gameObject.SetActive(false);
-                break;
-            }
+            case ColorType.green: { _sprite.sprite = green; break; }
+            case ColorType.yellow: { _sprite.sprite = gold; break; }
+            case ColorType.red: { _sprite.sprite = red; break; }
         }
 
     }
 
-    public virtual void ReflectionReaction(Vector3 normal)
+    void GenerateType()
     {
-        moveVector = Vector3.Reflect(moveVector*3, normal);
+        float chance = Random.Range(0f,1f);
+        if (chance < _generator.generateGreenChance)
+        {
+            type = ColorType.green;
+        }
+        else if (chance < _generator.generateGreenChance + _generator.generateYellowChance)
+        {
+            type = ColorType.yellow;
+        } else
+        {
+            type = ColorType.red;
+        }
     }
 
-    public virtual void PositiveReaction()
+    public override void ReflectionReaction(Vector3 normal)
     {
-        ScoreCounter.instance.AddCounter();
+        base.ReflectionReaction(normal);
+        SpawnParticle();
+        SpawnParticle();
     }
 
-    public virtual void NegativeReaction()
+    public override void PositiveReaction()
     {
-        ScoreCounter.instance.NegCounter();
+        //TODO: add absorbate animation;
+        base.PositiveReaction();
     }
 
-    Vector3 SetCurrentVector()
+    public override void NegativeReaction()
     {
-        return (Vector3.zero - transform.position).normalized;
+        SpawnParticle();
+
+        base.NegativeReaction();
     }
+
+    void SpawnParticle()
+    {
+        if (ParticleManagerScr.instance != null)
+            ParticleManagerScr.instance.SetParticle(transform.position, type);
+    }
+
 }

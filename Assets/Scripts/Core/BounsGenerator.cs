@@ -6,16 +6,12 @@ public class BounsGenerator : MonoBehaviour {
     [SerializeField]
     float bonusTime;
     [SerializeField]
-    List<GameObject> posBonusPref = new List<GameObject>();
-    [SerializeField]
-    List<GameObject> goldBonusPref = new List<GameObject>();
-    [SerializeField]
-    List<GameObject> badBonusPref = new List<GameObject>();
+    List<GameObject> ItemPref = new List<GameObject>();
     [SerializeField]
     GameObject bonusPrefab;
     [SerializeField]
     int poolLength;
-    List<PosBonus> bonusPool;
+    List<Bonus> bonusPool;
 
     public Collider2D greenSideCollider;
     public Collider2D redSideCollider;
@@ -37,14 +33,14 @@ public class BounsGenerator : MonoBehaviour {
 
     void GeneratePool()
     {
-        bonusPool = new List<PosBonus>();
+        bonusPool = new List<Bonus>();
         for (int i = 0; i < poolLength; i++)
         {
             GameObject pref = Instantiate(bonusPrefab);
-            PosBonus _bonus = new PosBonus();
-            _bonus = pref.GetComponent<PosBonus>();
-            _bonus.generator = this;
-            bonusPool.Add(_bonus);
+            Bonus bonusBase = new Bonus();
+            bonusBase = pref.GetComponent<Bonus>();
+            bonusBase.generator = this;
+            bonusPool.Add(bonusBase);
             pref.SetActive(false);
         }
         Generate();
@@ -66,13 +62,4 @@ public class BounsGenerator : MonoBehaviour {
             currentIndex = 0;
         bonusPool[currentIndex].initPos();
     }
-
-    /*
-	void Update () {
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            Generate();
-            //StartCoroutine(Generator());
-        }
-	}*/
 }

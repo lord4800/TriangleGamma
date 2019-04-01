@@ -3,45 +3,43 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DragingScript : MonoBehaviour {
-    public Transform recordT;
-    public Transform exitT;
-    public Transform settingsT;
+    public Transform recordButton;
+    public Transform exitButton;
+    public Transform settingsButton;
 
-    public Transform themsT;
-    public Transform tutorialT;
-    public Transform informationT;
+    public Transform themsButton;
+    public Transform tutorialButton;
+    public Transform informationButton;
 
     [SerializeField]
     float maxDistance;
     [SerializeField]
     float speed;
 
-    Vector3 _stRecordT;
-    Vector3 _stExitT;
-    Vector3 _stSettingsT;
+    Vector3 startRecordPosition;
+    Vector3 startExitPosition;
+    Vector3 startSettingsPosition;
 
-    Vector3 _stThemsT;
-    Vector3 _stTutorialT;
-    Vector3 _stInformationT;
+    Vector3 startThemsPosition;
+    Vector3 startTutorialPosition;
+    Vector3 startInformationPosition;
 
-    // Use this for initialization
     void Start () {
         SaveStartPos();
 	}
 	
-	// Update is called once per frame
 	void Update () {
         DragAllElements();
     }
 
     void DragAllElements()
     {
-        DragElement(recordT,_stRecordT);
-        DragElement(exitT, _stExitT);
-        DragElement(settingsT, _stSettingsT);
-        DragElement(themsT, _stThemsT);
-        DragElement(tutorialT, _stTutorialT);
-        DragElement(informationT, _stInformationT);
+        DragElement(recordButton,startRecordPosition);
+        DragElement(exitButton, startExitPosition);
+        DragElement(settingsButton, startSettingsPosition);
+        DragElement(themsButton, startThemsPosition);
+        DragElement(tutorialButton, startTutorialPosition);
+        DragElement(informationButton, startInformationPosition);
 
     }
 
@@ -73,17 +71,16 @@ public class DragingScript : MonoBehaviour {
     {
         float x = Random.Range(-1, 1f);
         float y = Random.Range(-1, 1f);
-        //Debug.Log(x + " : " + y);
         return new Vector3(x, y, 0);
     }
 
     void SaveStartPos()
     {
-        _stRecordT = recordT.position;
-        _stExitT = exitT.position;
-        _stSettingsT = settingsT.position;
-        _stThemsT = themsT.position;
-        _stTutorialT = tutorialT.position;
-        _stInformationT = informationT.position;
+        startRecordPosition = recordButton.position;
+        startExitPosition = exitButton.position;
+        startSettingsPosition = settingsButton.position;
+        startThemsPosition = themsButton.position;
+        startTutorialPosition = tutorialButton.position;
+        startInformationPosition = informationButton.position;
     }
 }

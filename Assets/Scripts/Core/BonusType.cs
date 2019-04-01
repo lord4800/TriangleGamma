@@ -1,11 +1,4 @@
-﻿
-public enum BonusType {
-    positive,
-    negative,
-    money
-}
-
-public enum SideType
+﻿public enum ColorType
 {
     green,
     red,
