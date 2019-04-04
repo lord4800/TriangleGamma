@@ -5,7 +5,7 @@ using UnityEngine;
 public class BonusBase : MonoBehaviour
 {
     private const float REFLECTION_SPEED_INCREASE = 2.5f;
-
+    private const float DELETE_BONUS_DISTANCE = 0.1f;
     public ColorType type;
     public float speed = 1f;
     public BounsGenerator generator { set { _generator = value; } }
@@ -34,9 +34,19 @@ public class BonusBase : MonoBehaviour
         return new Vector3(x,y,0);
     }
 
-    void Update () {
+    void Update ()
+    {
         MoveInc();
-	}
+        CheckDistance();
+    }
+
+    private void CheckDistance()
+    {
+        if (Vector3.Distance(transform.position, Vector3.zero) < DELETE_BONUS_DISTANCE)
+        {
+            gameObject.SetActive(false);
+        }
+    }
 
     void MoveInc()
     {
