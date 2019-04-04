@@ -44,6 +44,6 @@ public class MainMenuManager : MonoBehaviour
 
     public void SwapEvent()
     {
-        triangle.SetActive(true);
+        triangle.SetActive(!triangle.activeInHierarchy);
     }
 }
