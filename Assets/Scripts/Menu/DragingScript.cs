@@ -7,7 +7,7 @@ public class DragingScript : MonoBehaviour {
     [SerializeField] private float speed;
     [SerializeField] private List<Transform> buttonsTransforms = new List<Transform>();
 
-    private List<Vector3> startButtonsPositions;
+    private List<Vector3> startButtonsPositions = new List<Vector3>();
 
     void Start () {
         SaveStartPos();
