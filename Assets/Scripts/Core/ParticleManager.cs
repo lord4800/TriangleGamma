@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+
 public class ParticleManager : MonoBehaviour
 {
     private const int pullSize = 5;
-    static public ParticleManager instance { get; set;}
+
+    public static ParticleManager instance;
 
     [SerializeField] private GameObject particlePrefab;
     [SerializeField] private Color green;
@@ -12,10 +14,15 @@ public class ParticleManager : MonoBehaviour
 
     private List<ParticleSystem> particlePull = new List<ParticleSystem>();
     private int currentIndex;
+
+    void Awake()
+    {
+        if (instance == null)
+            instance = this;
+    }
     
     void Start ()
     {
-	    instance = this;
         for(int i = 0; i < pullSize; i++)
         {
             GameObject particle = Instantiate(particlePrefab);
@@ -26,7 +33,6 @@ public class ParticleManager : MonoBehaviour
     public void SetParticle(Vector3 pos, ColorType type)
     {
         currentIndex--;
-
         if (currentIndex < 0)
             currentIndex = particlePull.Count - 1;
 

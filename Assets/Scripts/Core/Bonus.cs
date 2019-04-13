@@ -55,8 +55,7 @@ public class Bonus : BonusBase {
 
     void SpawnParticle()
     {
-        if (ParticleManager.instance != null)
-            ParticleManager.instance.SetParticle(transform.position, type);
+        ParticleManager.instance.SetParticle(transform.position, type);
     }
 
 }
