@@ -6,6 +6,7 @@ public class BonusBase : MonoBehaviour
 {
     private const float REFLECTION_SPEED_INCREASE = 2.5f;
     private const float DELETE_BONUS_DISTANCE = 0.1f;
+    private const float GENERATION_ANGLE = 30f;
     public ColorType type;
     public float speed = 1f;
     public BounsGenerator generator { set { _generator = value; } }
@@ -21,10 +22,27 @@ public class BonusBase : MonoBehaviour
 
     public virtual void initPos()
     {
-        float angle = Random.Range(0, 360);
+        float angle = GetAngle();
         transform.position = GetRestartPos(angle);
         gameObject.SetActive(true);
         moveVector = SetCurrentVector();
+    }
+
+    private static float GetAngle()
+    {
+        int sector = Random.Range(1,5);
+        switch (sector)
+        {
+            case 1:
+                return Random.Range(0f, GENERATION_ANGLE);
+            case 2:
+                return Random.Range(180f - GENERATION_ANGLE, 180f);
+            case 3:
+                return Random.Range(180f, 180f + GENERATION_ANGLE);
+            case 4:
+                return Random.Range(360f - GENERATION_ANGLE, 360f);
+        }
+        return Random.Range(0f, 360f);
     }
 
     Vector3 GetRestartPos(float angle)
