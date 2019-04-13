@@ -4,7 +4,6 @@ public class TriangleMove : MonoBehaviour {
     public float rotateSpeed;
     public float lerpIndex;
     public enum RotateType { side, drag, buttons }
-    public RotateType rotateType = RotateType.side;
 
     private Quaternion lookRot = Quaternion.identity;
     private float angle = 0;
@@ -12,26 +11,15 @@ public class TriangleMove : MonoBehaviour {
     private bool chousedInput = false;
     private bool draging = false;
 
-    void Update() {
-        if (chousedInput)
-        {
-            switch (rotateType)
-            {
-                case RotateType.side: { SideInput(); break; }
-                case RotateType.drag: { DragInput(); break; }
-                case RotateType.buttons: { ButtonsInput(); break; }
-            }
-        }
-        else
-        {
-            DragInput();
-            if (!draging)
-                SideInput();
+    void Update()
+    {
+        DragInput();
+        if (!draging)
+            SideInput();
 #if UNITY_EDITOR
-            ButtonsInput();
+        ButtonsInput();
 #endif
-        }
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, lerpIndex) ;
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, lerpIndex);
     }
 
     void SideInput()
@@ -40,11 +28,11 @@ public class TriangleMove : MonoBehaviour {
         {
             if (Input.mousePosition.x - Screen.width / 2 < 0)
             {
-                angle += rotateSpeed * Time.smoothDeltaTime;
+                angle += rotateSpeed * Time.deltaTime;
             }
             else
             {
-                angle -= rotateSpeed * Time.smoothDeltaTime;
+                angle -= rotateSpeed * Time.deltaTime;
             }
         }
         lookRot = Quaternion.LookRotation(transform.forward, GetLookAtVec());
@@ -147,18 +135,12 @@ public class TriangleMove : MonoBehaviour {
 
     void ButtonsInput()
     {
-        /*if (Input.GetKey(KeyCode.Mouse0))
-        {
-            if (Input.mousePosition.x > Screen.width / 2)
-            {
-                angle -= rotateSpeed * Time.smoothDeltaTime;
-            }
-            if (Input.mousePosition.x < Screen.width / 2)
-            {
-                angle += rotateSpeed * Time.smoothDeltaTime;
-            }
-            lookRot = Quaternion.LookRotation(transform.forward, GetLookAtVec());
-        }
-        */
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+            angle += rotateSpeed * Time.deltaTime;
+
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+            angle -= rotateSpeed * Time.deltaTime;
+
+        lookRot = Quaternion.LookRotation(transform.forward, GetLookAtVec());
     }
 }
