@@ -3,32 +3,49 @@
 public class TriangleMove : MonoBehaviour {
     public float rotateSpeed;
     public float lerpIndex;
-    public enum RotateType { arrow, drag, buttons }
-    public RotateType rotateType = RotateType.arrow;
+    public enum RotateType { side, drag, buttons }
+    public RotateType rotateType = RotateType.side;
 
     private Quaternion lookRot = Quaternion.identity;
     private float angle = 0;
     private float dragAngle = 0;
+    private bool chousedInput = false;
+    private bool draging = false;
 
-	void Update () {
-        switch (rotateType)
+    void Update() {
+        if (chousedInput)
         {
-            case RotateType.arrow: { ArrowInput(); break; }
-            case RotateType.drag: { DragInput(); break; }
-            case RotateType.buttons: { ButtonsInput(); break; }
+            switch (rotateType)
+            {
+                case RotateType.side: { SideInput(); break; }
+                case RotateType.drag: { DragInput(); break; }
+                case RotateType.buttons: { ButtonsInput(); break; }
+            }
+        }
+        else
+        {
+            DragInput();
+            if (!draging)
+                SideInput();
+#if UNITY_EDITOR
+            ButtonsInput();
+#endif
         }
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, lerpIndex) ;
     }
 
-    void ArrowInput()
+    void SideInput()
     {
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetKey(KeyCode.Mouse0))
         {
-            angle += rotateSpeed * Time.smoothDeltaTime;
-        }
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
-            angle -= rotateSpeed * Time.smoothDeltaTime;
+            if (Input.mousePosition.x - Screen.width / 2 < 0)
+            {
+                angle += rotateSpeed * Time.smoothDeltaTime;
+            }
+            else
+            {
+                angle -= rotateSpeed * Time.smoothDeltaTime;
+            }
         }
         lookRot = Quaternion.LookRotation(transform.forward, GetLookAtVec());
     }
@@ -73,16 +90,31 @@ public class TriangleMove : MonoBehaviour {
 
         float angleWithDelta = Mathf.Deg2Rad * angle + deltaAngle;
         angle = Mathf.Rad2Deg * angleWithDelta;
-        // create vector in eulerXY
         lookRot = Quaternion.LookRotation(transform.forward, GetLookAtVec());
     }
 
-    void DragInput()
+    private void DragInput()
     {
+       
         if (Input.GetKeyDown(KeyCode.Mouse0))
-            StartDrag();
-        if (Input.GetKey(KeyCode.Mouse0))
+        {
+            if (Input.mousePosition.x > Screen.width / 2 - Screen.width / 6 && Input.mousePosition.x < Screen.width / 2 + Screen.width / 6)
+            {
+                draging = true;
+                StartDrag();
+            }
+        }
+
+        if (Input.GetKey(KeyCode.Mouse0) && draging)
+        {
             OnDrag();
+        }
+
+        if (Input.GetKeyUp(KeyCode.Mouse0) && draging)
+        {
+            draging = false;
+        }
+
         /* ForTouch
          * DONT DELETE
         if (Input.touchCount > 0)
@@ -115,9 +147,8 @@ public class TriangleMove : MonoBehaviour {
 
     void ButtonsInput()
     {
-        if (Input.GetKey(KeyCode.Mouse0))
+        /*if (Input.GetKey(KeyCode.Mouse0))
         {
-            //set angle change;
             if (Input.mousePosition.x > Screen.width / 2)
             {
                 angle -= rotateSpeed * Time.smoothDeltaTime;
@@ -126,8 +157,8 @@ public class TriangleMove : MonoBehaviour {
             {
                 angle += rotateSpeed * Time.smoothDeltaTime;
             }
-            // create vector in eulerXY
             lookRot = Quaternion.LookRotation(transform.forward, GetLookAtVec());
         }
+        */
     }
 }
