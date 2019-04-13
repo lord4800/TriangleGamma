@@ -40,6 +40,7 @@ public class MainMenuManager : MonoBehaviour
         buttonsCanvasGroup.alpha = 0;
         popCorot = null;
         buttonsCanvasGroup.gameObject.SetActive (false);
+        ScoreCounter.instance.InitGame();
     }
 
     public void SwapEvent()
