@@ -62,6 +62,7 @@ public class BonusBase : MonoBehaviour
     {
         if (Vector3.Distance(transform.position, Vector3.zero) < DELETE_BONUS_DISTANCE)
         {
+            NegativeReaction();
             gameObject.SetActive(false);
         }
     }
@@ -82,7 +83,6 @@ public class BonusBase : MonoBehaviour
     public void Contact(Collision2D collision)
     {
         ContactReaction(collision);
-        
     }
 
     ColorType getSideType(Collider2D contact)
