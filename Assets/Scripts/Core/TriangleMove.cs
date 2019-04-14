@@ -64,7 +64,6 @@ public class TriangleMove : MonoBehaviour {
     }
     void OnDrag()
     {
-        //set angle change;
         float newAngle;
         float cosA = GetCosA();
         float y = Input.mousePosition.y - Screen.height / 2;
@@ -102,35 +101,6 @@ public class TriangleMove : MonoBehaviour {
         {
             draging = false;
         }
-
-        /* ForTouch
-         * DONT DELETE
-        if (Input.touchCount > 0)
-        {
-            if (Input.GetTouch(0).phase == TouchPhase.Began)
-            {
-                Debug.Log(Input.GetTouch(0).position);
-                //deltaDragAngle = Input.GetTouch(0).position.y/ Input.GetTouch(0).position.x;
-            }
-
-            if (Input.GetTouch(0).phase == TouchPhase.Moved)
-            {
-                if (Input.GetTouch(0).position.x > Screen.width / 2)
-                {
-                    angle -= rotateSpeed * Time.smoothDeltaTime;
-                }
-                if (Input.GetTouch(0).position.x < Screen.width / 2)
-                {
-                    angle += rotateSpeed * Time.smoothDeltaTime;
-                }
-                float r = 1;
-                float x = r * Mathf.Cos(Mathf.Deg2Rad * angle);
-                float y = r * Mathf.Sin(Mathf.Deg2Rad * angle);
-                Vector3 lookAt = new Vector3(x, y, 0);
-                lookRot = Quaternion.LookRotation(transform.forward, lookAt);
-            }
-        }
-        */
     }
 
     void ButtonsInput()
