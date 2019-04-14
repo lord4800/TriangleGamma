@@ -15,10 +15,22 @@ public class MainMenuManager : MonoBehaviour
 
     Coroutine popCorot = null;
 
-    public void StartGame()
+    public void CloseMainMenu()
     {
         if (popCorot == null)
             popCorot = StartCoroutine(PopUpAnim());
+    }
+
+    private void Start()
+    {
+        GameManager.instance.onIntoMainMenuTranzitionEvent += OpenMainMenu;
+    }
+
+    private void OpenMainMenu()
+    {
+        gameObject.SetActive(true);
+        if (popCorot == null)
+            popCorot = StartCoroutine(PopDownAnim());
     }
 
     IEnumerator PopUpAnim()
@@ -40,7 +52,29 @@ public class MainMenuManager : MonoBehaviour
         buttonsCanvasGroup.alpha = 0;
         popCorot = null;
         buttonsCanvasGroup.gameObject.SetActive (false);
+        GameManager.instance.GameState = GameManager.GamesState.Game;
         ScoreCounter.instance.InitGame();
+    }
+
+    IEnumerator PopDownAnim()
+    {
+        bool sendMes = false;
+        buttonsCanvasGroup.gameObject.SetActive(true);
+        playButton.gameObject.SetActive(true);
+        for (float f = 0; f < animTime; f += Time.smoothDeltaTime)
+        {
+            playButton.localScale = Vector3.one * (1 - clip.Evaluate(f / animTime));
+            if (!sendMes && f > swapTimeCode)
+            {
+                sendMes = true;
+                SwapEvent();
+            }
+            buttonsCanvasGroup.alpha = f / animTime;
+            yield return null;
+        }
+        playButton.localScale = Vector3.one;
+        buttonsCanvasGroup.alpha = 1;
+        popCorot = null;
     }
 
     public void SwapEvent()

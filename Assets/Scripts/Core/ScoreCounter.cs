@@ -32,7 +32,7 @@ public class ScoreCounter : MonoBehaviour {
 
     public void AddCounter()
     {
-        if (timer > TIME_BEFORE_START)
+        if (timer > TIME_BEFORE_START && GameManager.instance.GameState == GameManager.GamesState.Game)
         {
             count++;
             ShowScore();
@@ -41,7 +41,7 @@ public class ScoreCounter : MonoBehaviour {
 
     public void NegCounter()
     {
-        if (timer > TIME_BEFORE_START)
+        if (timer > TIME_BEFORE_START && GameManager.instance.GameState == GameManager.GamesState.Game)
         {
             count--;
             ShowScore();
