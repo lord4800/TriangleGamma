@@ -39,15 +39,6 @@ public class ScoreCounter : MonoBehaviour {
         }
     }
 
-    public void NegCounter()
-    {
-        if (timer > TIME_BEFORE_START && GameManager.instance.GameState == GameManager.GamesState.Game)
-        {
-            count--;
-            ShowScore();
-        }
-    }
-
     void ShowScore()
     {
         counterText.text = count.ToString();

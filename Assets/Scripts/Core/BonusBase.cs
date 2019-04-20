@@ -62,7 +62,7 @@ public class BonusBase : MonoBehaviour
     {
         if (Vector3.Distance(transform.position, Vector3.zero) < DELETE_BONUS_DISTANCE)
         {
-            NegativeReaction();
+            Death();
             gameObject.SetActive(false);
         }
     }
@@ -108,18 +108,18 @@ public class BonusBase : MonoBehaviour
             case ColorType.green:
             {
                 if (type == ColorType.red)
-                    NegativeReaction(); 
+                    AcceptBonus(); 
                 else if (type == ColorType.green)
-                    PositiveReaction(); 
+                    AcceptBonus(); 
                 gameObject.SetActive(false);
                 break;
             }
             case ColorType.yellow:
             {
                 if (type == ColorType.yellow)
-                    PositiveReaction(); 
+                    AddCoins(); 
                 else if (type == ColorType.red)
-                    NegativeReaction(); 
+                    Death(); 
                 gameObject.SetActive(false);
                 break;
             }
@@ -131,14 +131,19 @@ public class BonusBase : MonoBehaviour
         moveVector = Vector3.Reflect(moveVector*3, normal);
     }
 
-    public virtual void PositiveReaction()
+    public virtual void AddCoins()
     {
         ScoreCounter.instance.AddCounter();
     }
 
-    public virtual void NegativeReaction()
+    public virtual void AcceptBonus()
     {
-        ScoreCounter.instance.NegCounter();
+
+    }
+
+    public virtual void Death()
+    {
+        //TODO: Death;
     }
 
     Vector3 SetCurrentVector()

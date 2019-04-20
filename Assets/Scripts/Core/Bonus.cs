@@ -24,16 +24,16 @@ public class Bonus : BonusBase {
         SpawnParticle();
     }
 
-    public override void PositiveReaction()
+    public override void AddCoins()
     {
         //TODO: add absorbate animation;
-        base.PositiveReaction();
+        base.AddCoins();
     }
 
-    public override void NegativeReaction()
+    public override void Death()
     {
         SpawnParticle();
-        base.NegativeReaction();
+        base.Death();
     }
 
     void GenerateType()
