@@ -21,76 +21,66 @@ public class BounsGenerator : MonoBehaviour {
     [SerializeField] private int poolLength;
 
     [Header("Yellow")]
-    [SerializeField] private GameObject yellow5Bonus;
-    [SerializeField] private GameObject yellow10Bonus;
+    [SerializeField] private GameObject yellowBonus;
     [Header("Green")]
     [SerializeField] private GameObject greenBonus;
     [Header("Red")]
     [SerializeField] private GameObject redBonus;
 
-    private List<Bonus> bonusPool;
+    private List<Bonus> yellowBonusPool = new List<Bonus>();
+    private List<Bonus> greenBonusPool = new List<Bonus>();
+    private List<Bonus> redBonusPool = new List<Bonus>();
 
     private int currentIndex = 0;
 
     public void Generate()
     {
-        currentIndex++;
-        if (currentIndex >= poolLength)
-            currentIndex = 0;
-        bonusPool[currentIndex].initPos();
+        GenerateBonus();
     }
 
     void Start () {
         _instance = this;
-        GeneratePool();
+        GeneratePool(yellowBonusPool,yellowBonus);
+        GeneratePool(greenBonusPool, greenBonus);
+        GeneratePool(redBonusPool, redBonus);
         StartCoroutine(Generator());
 	}
 
-    void GeneratePool()
+    void GeneratePool(List<Bonus> bonusPool, GameObject prefab)
     {
-        bonusPool = new List<Bonus>();
         for (int i = 0; i < poolLength; i++)
         {
-            GameObject pref = Instantiate(GenerateType());
+            GameObject pref = Instantiate(prefab);
             Bonus bonusBase = new Bonus();
             bonusBase = pref.GetComponent<Bonus>();
             bonusPool.Add(bonusBase);
             pref.SetActive(false);
         }
-        Generate();
     }
 
-    GameObject GenerateType()
+    void GenerateBonus()
     {
         float chance = Random.Range(0f, 1f);
         if (chance < generateGreenChance)
         {
-            return greenBonus;
+            SetFreeBonus(greenBonusPool);
         }
         else if (chance < generateGreenChance + generateYellowChance)
         {
-            return GenerateYellow();
+            SetFreeBonus(yellowBonusPool);
         }
         else
         {
-            return redBonus;
+            SetFreeBonus(redBonusPool);
         }
     }
 
-    GameObject GenerateYellow()
+    public void SetFreeBonus(List<Bonus> bonusPool)
     {
-        float chance = Random.Range(0f, 1f);
-        Debug.Log(chance);
-        if (chance < 0.5f)
-        {
-            Debug.Log(5);
-            return yellow5Bonus;
-        }
-        else 
-        {
-            Debug.Log(10);
-            return yellow10Bonus;
-        }
+        currentIndex++;
+        if (currentIndex >= poolLength)
+            currentIndex = 0;
+        bonusPool[currentIndex].initPos();
     }
 
     IEnumerator Generator()

@@ -2,11 +2,6 @@
 
 public class Bonus : BonusBase {
 
-    public override void initPos()
-    {
-        base.initPos();
-    }
-
     public override void ReflectionReaction(Vector3 normal)
     {
         base.ReflectionReaction(normal);
