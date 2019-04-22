@@ -30,11 +30,11 @@ public class ScoreCounter : MonoBehaviour {
         timer = 0;
     }
 
-    public void AddCounter()
+    public void AddCounter(int coins)
     {
         if (timer > TIME_BEFORE_START && GameManager.instance.GameState == GameManager.GamesState.Game)
         {
-            count++;
+            count+=coins;
             ShowScore();
         }
     }

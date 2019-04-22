@@ -7,14 +7,12 @@ public class BonusBase : MonoBehaviour
     private const float REFLECTION_SPEED_INCREASE = 2.5f;
     private const float DELETE_BONUS_DISTANCE = 0.1f;
     private const float GENERATION_ANGLE = 30f;
+    private const float SPEED = 4f;
+    private const float RANGE = 10f;
+
     public ColorType type;
-    public float speed = 1f;
-    public BounsGenerator generator { set { _generator = value; } }
 
-    [SerializeField] private float range = 10f;
     private Vector3 moveVector;
-
-    protected BounsGenerator _generator;
 
     void Start () {
         initPos();
@@ -47,8 +45,8 @@ public class BonusBase : MonoBehaviour
 
     Vector3 GetRestartPos(float angle)
     {
-        float x = range * Mathf.Cos(Mathf.Deg2Rad * angle);
-        float y = range * Mathf.Sin(Mathf.Deg2Rad * angle);
+        float x = RANGE * Mathf.Cos(Mathf.Deg2Rad * angle);
+        float y = RANGE * Mathf.Sin(Mathf.Deg2Rad * angle);
         return new Vector3(x,y,0);
     }
 
@@ -69,7 +67,7 @@ public class BonusBase : MonoBehaviour
 
     void MoveInc()
     {
-        transform.position += moveVector * speed * Time.smoothDeltaTime;
+        transform.position += moveVector * SPEED * Time.smoothDeltaTime;
     } 
 
     void OnCollisionEnter2D (Collision2D other)
@@ -87,9 +85,9 @@ public class BonusBase : MonoBehaviour
 
     ColorType getSideType(Collider2D contact)
     {
-        if (contact == _generator.greenSideCollider)
+        if (contact == BounsGenerator.instance.greenSideCollider)
             return ColorType.green;
-        else if (contact == _generator.yellowSideCollider)
+        else if (contact == BounsGenerator.instance.yellowSideCollider)
             return ColorType.yellow;
         else 
             return ColorType.red;
@@ -133,7 +131,7 @@ public class BonusBase : MonoBehaviour
 
     public virtual void AddCoins()
     {
-        ScoreCounter.instance.AddCounter();
+       
     }
 
     public virtual void AcceptBonus()
