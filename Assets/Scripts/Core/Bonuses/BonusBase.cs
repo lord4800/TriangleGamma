@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class BonusBase : MonoBehaviour
 {
+    public Action OnDeath;
+    
     private const float REFLECTION_SPEED_INCREASE = 2.5f;
     private const float DELETE_BONUS_DISTANCE = 0.1f;
     private const float GENERATION_ANGLE = 30f;
@@ -28,19 +31,19 @@ public class BonusBase : MonoBehaviour
 
     private static float GetAngle()
     {
-        int sector = Random.Range(1,5);
+        int sector = UnityEngine.Random.Range(1,5);
         switch (sector)
         {
             case 1:
-                return Random.Range(0f, GENERATION_ANGLE);
+                return UnityEngine.Random.Range(0f, GENERATION_ANGLE);
             case 2:
-                return Random.Range(180f - GENERATION_ANGLE, 180f);
+                return UnityEngine.Random.Range(180f - GENERATION_ANGLE, 180f);
             case 3:
-                return Random.Range(180f, 180f + GENERATION_ANGLE);
+                return UnityEngine.Random.Range(180f, 180f + GENERATION_ANGLE);
             case 4:
-                return Random.Range(360f - GENERATION_ANGLE, 360f);
+                return UnityEngine.Random.Range(360f - GENERATION_ANGLE, 360f);
         }
-        return Random.Range(0f, 360f);
+        return UnityEngine.Random.Range(0f, 360f);
     }
 
     Vector3 GetRestartPos(float angle)
@@ -85,9 +88,9 @@ public class BonusBase : MonoBehaviour
 
     ColorType getSideType(Collider2D contact)
     {
-        if (contact == BounsGenerator.instance.greenSideCollider)
+        if (contact == BounsGenerator.Instance.greenSideCollider)
             return ColorType.green;
-        else if (contact == BounsGenerator.instance.yellowSideCollider)
+        else if (contact == BounsGenerator.Instance.yellowSideCollider)
             return ColorType.yellow;
         else 
             return ColorType.red;
@@ -105,19 +108,23 @@ public class BonusBase : MonoBehaviour
             }
             case ColorType.green:
             {
-                if (type == ColorType.red)
-                    AcceptBonus(); 
-                else if (type == ColorType.green)
-                    AcceptBonus(); 
+                    if (type == ColorType.red)
+                        AcceptBonus();
+                    else if (type == ColorType.green)
+                        AcceptBonus();
+                    else if (type == ColorType.yellow)
+                        Death();
                 gameObject.SetActive(false);
                 break;
             }
             case ColorType.yellow:
             {
-                if (type == ColorType.yellow)
-                    AddCoins(); 
-                else if (type == ColorType.red)
-                    Death(); 
+                    if (type == ColorType.yellow)
+                        AddCoins();
+                    else if (type == ColorType.red)
+                        Death();
+                    else if (type == ColorType.green)
+                        Death();
                 gameObject.SetActive(false);
                 break;
             }
@@ -141,6 +148,9 @@ public class BonusBase : MonoBehaviour
 
     public virtual void Death()
     {
+        if (OnDeath != null)
+            OnDeath();
+        Debug.Log("Death");
         //TODO: Death;
     }
 

@@ -6,7 +6,7 @@ public class BounsGenerator : MonoBehaviour {
 
     static BounsGenerator _instance;
 
-    public static BounsGenerator instance { get { return _instance; } }
+    public static BounsGenerator Instance { get { return _instance; } }
 
     public Collider2D greenSideCollider;
     public Collider2D redSideCollider;
@@ -54,6 +54,7 @@ public class BounsGenerator : MonoBehaviour {
             Bonus bonusBase = new Bonus();
             bonusBase = pref.GetComponent<Bonus>();
             bonusPool.Add(bonusBase);
+            bonusBase.OnDeath += LifeManager.Instance.Death;
             pref.SetActive(false);
         }
     }
