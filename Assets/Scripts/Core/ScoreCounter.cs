@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ScoreCounter : MonoBehaviour {
-    private const float TIME_BEFORE_START = 1.5f;
+    
     static ScoreCounter _instance;
 
     public static ScoreCounter instance { get { return _instance; } }
@@ -13,8 +13,6 @@ public class ScoreCounter : MonoBehaviour {
 
     private Text counterText;
     private int count = 0;
-    private float timer;
-
 
     void Start ()
     {
@@ -27,12 +25,11 @@ public class ScoreCounter : MonoBehaviour {
     {
         count = 0;
         ShowScore();
-        timer = 0;
     }
 
     public void AddCounter(int coins)
     {
-        if (timer > TIME_BEFORE_START && GameManager.instance.GameState == GameManager.GamesState.Game)
+        if (GameManager.Instance.GameState == GameManager.GamesState.Game)
         {
             count+=coins;
             ShowScore();
@@ -43,11 +40,6 @@ public class ScoreCounter : MonoBehaviour {
     {
         counterText.text = count.ToString();
         StartCoroutine(ChangeAnim());
-    }
-
-    void Update()
-    {
-        timer += Time.deltaTime;
     }
 
     IEnumerator ChangeAnim()

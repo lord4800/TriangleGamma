@@ -12,6 +12,7 @@ public class LifeManager : MonoBehaviour
     
 
     [SerializeField] private List<GameObject> lifeIndication;
+    [SerializeField] private GameObject lifeBackground;
 
     private int lifes;
 
@@ -19,7 +20,30 @@ public class LifeManager : MonoBehaviour
     {
         _instance = this;
 
+        lifeBackground.SetActive(false);
+        foreach (GameObject heart in lifeIndication)
+        {
+            heart.SetActive(false);
+        }
+
+        
+    }
+
+    private void Start()
+    {
+        GameManager.Instance.onIntoGameTranzitionEvent += Init;
+    }
+
+    private void Init()
+    {
         lifes = LIFES;
+        Debug.Log("Init");
+        lifeBackground.SetActive(true);
+
+        foreach (GameObject heart in lifeIndication)
+        {
+            heart.SetActive(true);
+        }
     }
 
     private void UpdateIndication()
@@ -37,6 +61,8 @@ public class LifeManager : MonoBehaviour
 
     public void Death()
     {
+        if (GameManager.Instance.GameState != GameManager.GamesState.Game)
+            return;
         lifes--;
         UpdateIndication();
         if (lifes == 0)
@@ -47,6 +73,8 @@ public class LifeManager : MonoBehaviour
 
     void GameOver()
     {
+        lifeBackground.SetActive(false);
+        GameManager.Instance.GameState = GameManager.GamesState.GameOver;
         Debug.Log("<<GAME OVER>>");
     }
 }

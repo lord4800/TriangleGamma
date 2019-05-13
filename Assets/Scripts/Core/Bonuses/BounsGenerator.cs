@@ -35,7 +35,8 @@ public class BounsGenerator : MonoBehaviour {
 
     public void Generate()
     {
-        GenerateBonus();
+        if (GameManager.Instance.GameState != GameManager.GamesState.GameOver)
+            GenerateBonus();
     }
 
     void Start () {

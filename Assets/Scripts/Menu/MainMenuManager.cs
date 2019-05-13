@@ -23,7 +23,7 @@ public class MainMenuManager : MonoBehaviour
 
     private void Start()
     {
-        GameManager.instance.onIntoMainMenuTranzitionEvent += OpenMainMenu;
+        GameManager.Instance.onIntoMainMenuTranzitionEvent += OpenMainMenu;
     }
 
     private void OpenMainMenu()
@@ -52,7 +52,7 @@ public class MainMenuManager : MonoBehaviour
         buttonsCanvasGroup.alpha = 0;
         popCorot = null;
         buttonsCanvasGroup.gameObject.SetActive (false);
-        GameManager.instance.GameState = GameManager.GamesState.Game;
+        GameManager.Instance.GameState = GameManager.GamesState.WaitForEffect;
         ScoreCounter.instance.InitGame();
     }
 

@@ -4,11 +4,13 @@ public class GameScreen : MonoBehaviour {
 
     [SerializeField] private GameObject counter;
     [SerializeField] private GameObject mainMenuButton;
+    [SerializeField] private GameObject gameOver;
 
     void Start()
     {
-        GameManager.instance.onIntoGameTranzitionEvent += ToGameTranzition;
-        GameManager.instance.onIntoMainMenuTranzitionEvent += ToMainMenuTranzition;
+        GameManager.Instance.onIntoWaitForGameTranzitionEvent += ToGameTranzition;
+        GameManager.Instance.onIntoMainMenuTranzitionEvent += ToMainMenuTranzition;
+        GameManager.Instance.onIntoGameOverTranzitionEvent += GameOverEvent;
     }
 
     private void ToGameTranzition()
@@ -21,10 +23,17 @@ public class GameScreen : MonoBehaviour {
     {
         counter.SetActive(false);
         mainMenuButton.SetActive(false);
+        gameOver.SetActive(false);
+    }
+
+    private void GameOverEvent()
+    {
+        gameOver.SetActive(true);
+        //Pop up animation
     }
 
     public void BackToMenuClick()
     {
-        GameManager.instance.GameState = GameManager.GamesState.Menu;
+        GameManager.Instance.GameState = GameManager.GamesState.Menu;
     }
 }

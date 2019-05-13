@@ -99,6 +99,12 @@ public class BonusBase : MonoBehaviour
     public virtual void ContactReaction(Collision2D collision)
     {
         ColorType color = getSideType(collision.collider);
+        if (GameManager.Instance.GameState == GameManager.GamesState.WaitForEffect)
+        {
+            ReflectionReaction(collision.contacts[0].normal);
+            return;
+        }
+
         switch (color)
         {
             case ColorType.red:
@@ -148,10 +154,11 @@ public class BonusBase : MonoBehaviour
 
     public virtual void Death()
     {
-        if (OnDeath != null)
+        if (OnDeath != null && GameManager.Instance.GameState == GameManager.GamesState.Game)
+        {
             OnDeath();
-        Debug.Log("Death");
-        //TODO: Death;
+            Debug.Log("Death");
+        }
     }
 
     Vector3 SetCurrentVector()
