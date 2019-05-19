@@ -70,7 +70,7 @@ public class BonusBase : MonoBehaviour
 
     void MoveInc()
     {
-        transform.position += moveVector * SPEED * Time.smoothDeltaTime;
+        transform.position += moveVector * SPEED * Time.smoothDeltaTime * GameManager.Instance.TimeScale;
     } 
 
     void OnCollisionEnter2D (Collision2D other)
