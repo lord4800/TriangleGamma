@@ -26,13 +26,27 @@ public class TriangleMove : MonoBehaviour {
     {
         if (Input.GetKey(KeyCode.Mouse0))
         {
-            if (Input.mousePosition.x - Screen.width / 2 < 0)
+            if (GameManager.Instance.IsRevertControl)
             {
-                angle += rotateSpeed * Time.deltaTime;
+                if (Input.mousePosition.x - Screen.width / 2 < 0)
+                {
+                    angle -= rotateSpeed * Time.deltaTime;
+                }
+                else
+                {
+                    angle += rotateSpeed * Time.deltaTime;
+                }
             }
             else
             {
-                angle -= rotateSpeed * Time.deltaTime;
+                if (Input.mousePosition.x - Screen.width / 2 < 0)
+                {
+                    angle += rotateSpeed * Time.deltaTime;
+                }
+                else
+                {
+                    angle -= rotateSpeed * Time.deltaTime;
+                }
             }
         }
         lookRot = Quaternion.LookRotation(transform.forward, GetLookAtVec());
@@ -77,7 +91,10 @@ public class TriangleMove : MonoBehaviour {
 
         float angleWithDelta = Mathf.Deg2Rad * angle + deltaAngle;
         angle = Mathf.Rad2Deg * angleWithDelta;
-        lookRot = Quaternion.LookRotation(transform.forward, GetLookAtVec());
+        if (GameManager.Instance.IsRevertControl)
+            lookRot = Quaternion.LookRotation(-transform.forward, GetLookAtVec());
+        else
+            lookRot = Quaternion.LookRotation(transform.forward, GetLookAtVec());
     }
 
     private void DragInput()
@@ -105,11 +122,22 @@ public class TriangleMove : MonoBehaviour {
 
     void ButtonsInput()
     {
-        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
-            angle += rotateSpeed * Time.deltaTime;
+        if (GameManager.Instance.IsRevertControl)
+        {
+            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+                angle -= rotateSpeed * Time.deltaTime;
 
-        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
-            angle -= rotateSpeed * Time.deltaTime;
+            if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+                angle += rotateSpeed * Time.deltaTime;
+        }
+        else
+        {
+            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+                angle += rotateSpeed * Time.deltaTime;
+
+            if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+                angle -= rotateSpeed * Time.deltaTime;
+        }
 
         lookRot = Quaternion.LookRotation(transform.forward, GetLookAtVec());
     }

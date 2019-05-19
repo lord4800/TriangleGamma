@@ -9,25 +9,14 @@ public class EffectBonus : Bonus
         timeScaleDown,
         timeScaleUp,
         revertControl,
-        extramoney
+        extramoney,
+        none
     }
 
     [SerializeField] private EffectBonusType bonusType;
 
     public override void AcceptBonus()
     {
-        switch (bonusType)
-        {
-            case EffectBonusType.timeScaleDown:
-                {
-                    GameManager.Instance.TimeSlowDownEvent();
-                    break;
-                }
-            case EffectBonusType.timeScaleUp:
-                {
-                    GameManager.Instance.TimeUpEvent();
-                    break;
-                }
-        }
+        GameManager.Instance.EffectBonusType = bonusType;
     }
 }

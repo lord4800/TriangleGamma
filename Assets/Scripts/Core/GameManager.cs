@@ -11,6 +11,11 @@ public class GameManager : MonoBehaviour {
     private const float UP_TIMESCALE = 1.2f;
     private const float EFFECT_TIMER = 5f;
 
+    public event Action onIntoGameTranzitionEvent;
+    public event Action onIntoMainMenuTranzitionEvent;
+    public event Action onIntoWaitForGameTranzitionEvent;
+    public event Action onIntoGameOverTranzitionEvent;
+
     private float timer;
     private Coroutine effectCorotine;
 
@@ -20,6 +25,37 @@ public class GameManager : MonoBehaviour {
         WaitForEffect,
         Game,
         GameOver
+    }
+
+    private EffectBonus.EffectBonusType effectBonusType;
+
+    public EffectBonus.EffectBonusType EffectBonusType
+    {
+        get
+        {
+            return effectBonusType;
+        }
+        set
+        {
+            switch (value)
+            {
+                case EffectBonus.EffectBonusType.timeScaleDown:
+                    timeScale = SLOWDOWN_TIMESCALE;
+                    StartEffectTimer();
+                    break;
+                case EffectBonus.EffectBonusType.timeScaleUp:
+                    timeScale = UP_TIMESCALE;
+                    StartEffectTimer();
+                    break;
+                case EffectBonus.EffectBonusType.extramoney:
+                        
+                    break;
+                case EffectBonus.EffectBonusType.revertControl:
+                    isRevertControl = !isRevertControl;
+                    break;
+            }
+            effectBonusType = value;
+        }
     }
 
     private GamesState gameState;
@@ -47,11 +83,14 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    private bool isRevertControl;
 
-    public event Action onIntoGameTranzitionEvent;
-    public event Action onIntoMainMenuTranzitionEvent;
-    public event Action onIntoWaitForGameTranzitionEvent;
-    public event Action onIntoGameOverTranzitionEvent;
+    public bool IsRevertControl
+    {
+        get {
+            return isRevertControl;
+        }
+    }
 
     private void Awake()
     {
@@ -76,23 +115,34 @@ public class GameManager : MonoBehaviour {
         GameState = GamesState.Game;
     }
 
-    public void TimeSlowDownEvent()
-    {
-        if (effectCorotine != null)
-            StopCoroutine(effectCorotine);
-        timeScale = SLOWDOWN_TIMESCALE;
-        effectCorotine = StartCoroutine(TimeScaleWait());
-    }
-
-    public void TimeUpEvent()
-    {
-        timeScale = UP_TIMESCALE;
-        effectCorotine = StartCoroutine(TimeScaleWait());
-    }
-
     private IEnumerator TimeScaleWait()
     {
         yield return new WaitForSeconds(EFFECT_TIMER);
         timeScale = 1f;
+    }
+
+    private void StartEffectTimer()
+    {
+        if (effectCorotine != null)
+            StopCoroutine(effectCorotine);
+        effectCorotine = StartCoroutine(TimeScaleWait());
+    }
+
+    private void StopEffect()
+    {
+        switch (EffectBonusType)
+        {
+            case EffectBonus.EffectBonusType.timeScaleDown:
+            case EffectBonus.EffectBonusType.timeScaleUp:
+                timeScale = 1f;
+                break;
+            case EffectBonus.EffectBonusType.extramoney:
+                
+                break;
+            case EffectBonus.EffectBonusType.revertControl:
+                isRevertControl = false;
+                break;
+        }
+        EffectBonusType = EffectBonus.EffectBonusType.none;
     }
 }
