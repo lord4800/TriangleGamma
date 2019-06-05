@@ -49,7 +49,11 @@ public class TriangleMove : MonoBehaviour {
     float GetCosA()
     {
         float y = Input.mousePosition.y - Screen.height / 2;
-        float x = Input.mousePosition.x - Screen.width / 2;
+        float x;
+        if (GameManager.Instance.IsRevertControl)
+            x = -1 * (Input.mousePosition.x - Screen.width / 2);
+        else
+            x = Input.mousePosition.x - Screen.width / 2;
         return x / Mathf.Sqrt(x * x + y * y);
     }
 
@@ -68,6 +72,7 @@ public class TriangleMove : MonoBehaviour {
         float newAngle;
         float cosA = GetCosA();
         float y = Input.mousePosition.y - Screen.height / 2;
+
         if (y > 0)
             newAngle = Mathf.Acos(cosA);
         else
