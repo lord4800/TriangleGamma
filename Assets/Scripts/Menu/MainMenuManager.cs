@@ -53,7 +53,7 @@ public class MainMenuManager : MonoBehaviour
         popCorot = null;
         buttonsCanvasGroup.gameObject.SetActive (false);
         GameManager.Instance.GameState = GameManager.GamesState.WaitForEffect;
-        ScoreCounter.instance.InitGame();
+        ScoreCounter.Instance.InitGame();
     }
 
     IEnumerator PopDownAnim()

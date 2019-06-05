@@ -6,7 +6,7 @@ public class ScoreCounter : MonoBehaviour {
     
     static ScoreCounter _instance;
 
-    public static ScoreCounter instance { get { return _instance; } }
+    public static ScoreCounter Instance { get { return _instance; } }
     public AnimationCurve changeScoreAnim;
 
     [SerializeField] private float animTime;
@@ -14,11 +14,10 @@ public class ScoreCounter : MonoBehaviour {
     private Text counterText;
     private int count = 0;
 
-    void Start ()
+    private void Awake()
     {
         _instance = this;
         counterText = GetComponent<Text>();
-        InitGame();
     }
 
     public void InitGame()
