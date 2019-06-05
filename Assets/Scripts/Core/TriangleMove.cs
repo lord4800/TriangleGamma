@@ -26,27 +26,13 @@ public class TriangleMove : MonoBehaviour {
     {
         if (Input.GetKey(KeyCode.Mouse0))
         {
-            if (GameManager.Instance.IsRevertControl)
+            if (Input.mousePosition.x - Screen.width / 2 < 0)
             {
-                if (Input.mousePosition.x - Screen.width / 2 < 0)
-                {
-                    angle -= rotateSpeed * Time.deltaTime;
-                }
-                else
-                {
-                    angle += rotateSpeed * Time.deltaTime;
-                }
+                UpdateAngle(true);
             }
             else
             {
-                if (Input.mousePosition.x - Screen.width / 2 < 0)
-                {
-                    angle += rotateSpeed * Time.deltaTime;
-                }
-                else
-                {
-                    angle -= rotateSpeed * Time.deltaTime;
-                }
+                UpdateAngle(false);
             }
         }
         lookRot = Quaternion.LookRotation(transform.forward, GetLookAtVec());
@@ -120,23 +106,28 @@ public class TriangleMove : MonoBehaviour {
 
     void ButtonsInput()
     {
-        if (GameManager.Instance.IsRevertControl)
-        {
-            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
-                angle -= rotateSpeed * Time.deltaTime;
-
-            if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
-                angle += rotateSpeed * Time.deltaTime;
-        }
-        else
-        {
-            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
-                angle += rotateSpeed * Time.deltaTime;
-
-            if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
-                angle -= rotateSpeed * Time.deltaTime;
-        }
+        KeyRotate();
 
         lookRot = Quaternion.LookRotation(transform.forward, GetLookAtVec());
+    }
+
+    private void KeyRotate()
+    {
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+        {
+            UpdateAngle(true);
+        }
+
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+        {
+            UpdateAngle(false);
+        }
+    }
+
+    private void UpdateAngle(bool isLeft)
+    {
+        int increase;
+        increase = isLeft ? (GameManager.Instance.IsRevertControl ? -1 : 1) : (GameManager.Instance.IsRevertControl ? 1 : -1);
+        angle += increase* rotateSpeed * Time.deltaTime;
     }
 }
