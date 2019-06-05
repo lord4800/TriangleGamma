@@ -76,6 +76,7 @@ public class TriangleMove : MonoBehaviour {
         else
             dragAngle = - Mathf.Acos(cosA);
     }
+
     void OnDrag()
     {
         float newAngle;
@@ -91,10 +92,7 @@ public class TriangleMove : MonoBehaviour {
 
         float angleWithDelta = Mathf.Deg2Rad * angle + deltaAngle;
         angle = Mathf.Rad2Deg * angleWithDelta;
-        if (GameManager.Instance.IsRevertControl)
-            lookRot = Quaternion.LookRotation(-transform.forward, GetLookAtVec());
-        else
-            lookRot = Quaternion.LookRotation(transform.forward, GetLookAtVec());
+        lookRot = Quaternion.LookRotation(transform.forward, GetLookAtVec());
     }
 
     private void DragInput()

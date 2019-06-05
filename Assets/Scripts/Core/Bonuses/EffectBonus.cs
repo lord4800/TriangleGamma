@@ -14,6 +14,25 @@ public class EffectBonus : Bonus
     }
 
     [SerializeField] private EffectBonusType bonusType;
+    private SpriteRenderer sprite;
+
+    public override void initPos()
+    {
+        float random = Random.Range(0f, 1f);
+        if (random < 0.3f)
+            bonusType = EffectBonusType.timeScaleDown;
+        else if (random < 0.6f)
+            bonusType = EffectBonusType.timeScaleUp;
+        else
+            bonusType = EffectBonusType.revertControl;
+
+        //TODO GetImage
+        sprite = GetComponent<SpriteRenderer>();
+        
+        sprite.sprite = GameManager.Instance.EffectImage(bonusType);
+
+        base.initPos();
+    }
 
     public override void AcceptBonus()
     {

@@ -28,6 +28,6 @@ public class YellowBonus : Bonus
     public override void AddCoins()
     {
         //TODO: add absorbate animation;
-        ScoreCounter.instance.AddCounter(coins);
+        ScoreCounter.Instance.AddCounter(coins);
     }
 }

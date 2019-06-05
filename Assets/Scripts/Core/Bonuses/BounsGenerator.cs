@@ -13,23 +13,18 @@ public class BounsGenerator : MonoBehaviour {
     public Collider2D yellowSideCollider;
 
     [Header("Sum of chance should be 1")]
-    public float generateGreenChance;
-    public float generateRedChance;
+    public float generateEffectChance;
     public float generateYellowChance;
 
     [SerializeField] private float bonusTime;
     [SerializeField] private int poolLength;
 
-    [Header("Yellow")]
+    [Header("Bonuses")]
     [SerializeField] private GameObject yellowBonus;
-    [Header("Green")]
-    [SerializeField] private GameObject greenBonus;
-    [Header("Red")]
-    [SerializeField] private GameObject redBonus;
+    [SerializeField] private GameObject effectBonus;
 
-    private List<Bonus> yellowBonusPool = new List<Bonus>();
-    private List<Bonus> greenBonusPool = new List<Bonus>();
-    private List<Bonus> redBonusPool = new List<Bonus>();
+    private List<Bonus> yellowPool = new List<Bonus>();
+    private List<Bonus> effectPool = new List<Bonus>();
 
     private int currentIndex = 0;
 
@@ -41,9 +36,8 @@ public class BounsGenerator : MonoBehaviour {
 
     void Start () {
         _instance = this;
-        GeneratePool(yellowBonusPool,yellowBonus);
-        GeneratePool(greenBonusPool, greenBonus);
-        GeneratePool(redBonusPool, redBonus);
+        GeneratePool(yellowPool,yellowBonus);
+        GeneratePool(effectPool, effectBonus);
         StartCoroutine(Generator());
 	}
 
@@ -63,17 +57,13 @@ public class BounsGenerator : MonoBehaviour {
     void GenerateBonus()
     {
         float chance = Random.Range(0f, 1f);
-        if (chance < generateGreenChance)
+        if (chance < generateEffectChance)
         {
-            SetFreeBonus(greenBonusPool);
-        }
-        else if (chance < generateGreenChance + generateYellowChance)
-        {
-            SetFreeBonus(yellowBonusPool);
+            SetFreeBonus(effectPool);
         }
         else
         {
-            SetFreeBonus(redBonusPool);
+            SetFreeBonus(yellowPool);
         }
     }
 

@@ -19,6 +19,12 @@ public class GameManager : MonoBehaviour {
     private float timer;
     private Coroutine effectCorotine;
 
+    [SerializeField] private Sprite speedUp;
+    [SerializeField] private Sprite speedDown;
+    [SerializeField] private Sprite revertController;
+    [SerializeField] private Sprite extraMoney;
+
+
     public enum GamesState
     {
         Menu,
@@ -56,6 +62,22 @@ public class GameManager : MonoBehaviour {
             }
             effectBonusType = value;
         }
+    }
+
+    public Sprite EffectImage(EffectBonus.EffectBonusType effectType)
+    {
+        switch (effectType)
+        {
+            case EffectBonus.EffectBonusType.timeScaleDown:
+                return speedDown;
+            case EffectBonus.EffectBonusType.timeScaleUp:
+                return speedUp;
+            case EffectBonus.EffectBonusType.extramoney:
+                return extraMoney;
+            case EffectBonus.EffectBonusType.revertControl:
+                return revertController;
+        }
+        return null;
     }
 
     private GamesState gameState;
